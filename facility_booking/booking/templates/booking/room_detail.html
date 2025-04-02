@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>{{ room.name }}</h2>
+<p>{{ room.description }}</p>
+<p><strong>Capacity:</strong> {{ room.capacity }}</p>
+<p><strong>Location:</strong> {{ room.location }}</p>
+<p><strong>Equipment:</strong> {{ room.equipment }}</p>
+<hr>
+<h3>Bookings for this Room</h3>
+<ul class="list-group">
+  {% for booking in bookings %}
+    <li class="list-group-item">
+      <strong>{{ booking.event_title }}</strong>:
+      {{ booking.start_time|date:"Y-m-d H:i" }} - {{ booking.end_time|date:"Y-m-d H:i" }}
+      ({{ booking.status }})
+    </li>
+  {% empty %}
+    <li class="list-group-item">No bookings yet.</li>
+  {% endfor %}
+</ul>
+<a href="{% url 'create_booking' %}" class="btn btn-success mt-3">Book this Room</a>
+{% endblock %}

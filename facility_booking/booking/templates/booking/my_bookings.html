@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>My Bookings</h2>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Event Title</th>
+      <th>Room</th>
+      <th>Time</th>
+      <th>Status</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for booking in bookings %}
+    <tr>
+      <td>{{ booking.event_title }}</td>
+      <td>{{ booking.room.name }}</td>
+      <td>{{ booking.start_time|date:"Y-m-d H:i" }} - {{ booking.end_time|date:"Y-m-d H:i" }}</td>
+      <td>{{ booking.status }}</td>
+      <td>
+        {% if booking.status == 'pending' or booking.status == 'approved' %}
+          <a href="{% url 'update_booking' booking.id %}" class="btn btn-sm btn-warning">Edit</a>
+          <a href="{% url 'cancel_booking' booking.id %}" class="btn btn-sm btn-danger">Cancel</a>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

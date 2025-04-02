@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Pending Bookings (Admin Dashboard)</h2>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Event Title</th>
+      <th>User</th>
+      <th>Room</th>
+      <th>Time</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for booking in bookings %}
+    <tr>
+      <td>{{ booking.event_title }}</td>
+      <td>{{ booking.user.username }}</td>
+      <td>{{ booking.room.name }}</td>
+      <td>{{ booking.start_time|date:"Y-m-d H:i" }} - {{ booking.end_time|date:"Y-m-d H:i" }}</td>
+      <td>
+        <a href="{% url 'approve_booking' booking.id %}" class="btn btn-sm btn-success">Approve</a>
+        <a href="{% url 'deny_booking' booking.id %}" class="btn btn-sm btn-danger">Deny</a>
+      </td>
+    </tr>
+    {% empty %}
+      <tr><td colspan="5">No pending bookings.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

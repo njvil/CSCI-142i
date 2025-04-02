@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Booking Submitted</h2>
+<p>Your booking request has been submitted successfully and is pending approval.</p>
+<a href="{% url 'room_list' %}" class="btn btn-primary">Return to Rooms</a>
+{% endblock %}

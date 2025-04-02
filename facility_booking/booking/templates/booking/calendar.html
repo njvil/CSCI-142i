@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Upcoming Bookings Calendar</h2>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Time</th>
+      <th>Room</th>
+      <th>Event</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for booking in bookings %}
+    <tr>
+      <td>{{ booking.start_time|date:"Y-m-d" }}</td>
+      <td>{{ booking.start_time|date:"H:i" }} - {{ booking.end_time|date:"H:i" }}</td>
+      <td>{{ booking.room.name }}</td>
+      <td>{{ booking.event_title }}</td>
+      <td>{{ booking.status }}</td>
+    </tr>
+    {% empty %}
+      <tr>
+        <td colspan="5">No upcoming bookings.</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
