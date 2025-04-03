@@ -3,7 +3,10 @@
 {% block sub_navbar %}
 <nav class="navbar navbar-expand-lg navbar-light">
   <div class="container-fluid">
-    <a class="navbar-nav" href="{% url 'room_list' %}" style="color: #575757; text-decoration: none;">
+    <a class="navbar-nav" href="{% url 'room_list' %}" 
+    style="color: #575757; text-decoration: none;" 
+    onmouseover="this.style.color='#295dcf';"
+    onmouseout="this.style.color='#575757';">
       <i class="bi bi-arrow-left me-2"></i><em>Back to Home</em></a>
   </div>
 </nav>
