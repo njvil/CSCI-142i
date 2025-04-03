@@ -1,7 +1,7 @@
 {
     "builds": [
       {
-        "src": "projectname/wsgi.py",
+        "src": "facility_booking/wsgi.py",
         "use": "@vercel/python",
         "config": { "maxLambdaSize": "15mb", "runtime": "python3.12" }
       },
@@ -18,7 +18,7 @@
       },
       {
         "src": "/(.)",
-        "dest": "projectname/wsgi.py"
+        "dest": "facility_booking/wsgi.py"
       }
     ]
   }
