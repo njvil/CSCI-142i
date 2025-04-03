@@ -3,18 +3,50 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
-from .models import Room, Booking
+from .models import Room, Booking, Equipment
 from .forms import BookingForm, BookingUpdateForm
 from django.utils import timezone
 import random
 
 def room_list(request):
-    # Search/filter functionality using GET parameters (e.g., by capacity or keyword in equipment)
-    query = request.GET.get('q', '')
     rooms = Room.objects.all()
+    equipment_list = Equipment.objects.all()
+
+    # Retrieve filter parameters from GET
+    event_date = request.GET.get('event_date')
+    start_time = request.GET.get('start_time')
+    end_time = request.GET.get('end_time')
+    equipment_id = request.GET.get('equipment')
+    query = request.GET.get('q', '')
+
+    # Filter by date and time if provided
+    if event_date and start_time and end_time:
+        # Exclude rooms that have a booking on that date overlapping with the given times
+        rooms = rooms.exclude(
+            booking__event_date=event_date,
+            booking__start_time__lt=end_time,
+            booking__end_time__gt=start_time,
+            booking__status__in=['pending', 'approved']
+        )
+    
+    # Filter by equipment if provided (rooms must have at least the selected equipment)
+    if equipment_id:
+        rooms = rooms.filter(equipment=equipment_id)
+    
+    # Optionally, filter by room name or description with a query string
     if query:
-        rooms = rooms.filter(name__icontains=query) | rooms.filter(equipment__icontains=query)
-    return render(request, 'booking/room_list.html', {'rooms': rooms, 'query': query})
+        rooms = rooms.filter(name__icontains=query)
+
+    return render(request, 'booking/room_list.html', {
+        'rooms': rooms,
+        'equipment_list': equipment_list,
+        'query': query,
+        'event_date': event_date or '',
+        'start_time': start_time or '',
+        'end_time': end_time or '',
+        'selected_equipment': equipment_id or '',
+    })
+
 
 def room_detail(request, pk):
     room = get_object_or_404(Room, pk=pk)
