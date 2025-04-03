@@ -36,7 +36,7 @@
   {% for other_room in other_rooms %}
   <div class="col-md-3 col-sm-6">
     <a href="{% url 'room_detail' other_room.pk %}" style="text-decoration: none">
-      <div class="card mb-2"> 
+      <div class="card mb-2 custom-card"> 
         <div class="card-body p-2"> 
           <h6 class="card-title">{{ other_room.name }}</h6> 
           <p class="card-text text-truncate" style="max-width: 250px;">{{ other_room.description }}</p>
