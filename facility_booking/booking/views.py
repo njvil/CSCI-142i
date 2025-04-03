@@ -6,6 +6,7 @@ from django.conf import settings
 from .models import Room, Booking
 from .forms import BookingForm, BookingUpdateForm
 from django.utils import timezone
+import random
 
 def room_list(request):
     # Search/filter functionality using GET parameters (e.g., by capacity or keyword in equipment)
@@ -17,7 +18,9 @@ def room_list(request):
 
 def room_detail(request, pk):
     room = get_object_or_404(Room, pk=pk)
-    other_rooms = Room.objects.exclude(pk=pk)
+    all_other_rooms = list(Room.objects.exclude(pk=pk))  
+    random.shuffle(all_other_rooms)
+    other_rooms = all_other_rooms[:8]
     bookings = Booking.objects.filter(room=room).order_by('start_time')
     return render(request, 'booking/room_detail.html', {'room': room, 'bookings': bookings, 'other_rooms': other_rooms})
 
