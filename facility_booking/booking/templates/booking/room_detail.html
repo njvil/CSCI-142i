@@ -3,7 +3,7 @@
 {% block sub_navbar %}
 <nav class="navbar navbar-expand-lg navbar-light">
   <div class="container-fluid">
-    <a class="navbar-nav" href="{% url 'room_list' %}">
+    <a class="navbar-nav" href="{% url 'room_list' %}" style="color: #575757; text-decoration: none;">
       <i class="bi bi-arrow-left me-2"></i><em>Back to Home</em></a>
   </div>
 </nav>
@@ -34,14 +34,15 @@
 <p>
 <div class="row">
   {% for other_room in other_rooms %}
-  <div class="col-md-3 col-sm-6"> 
-    <div class="card mb-2"> 
-      <div class="card-body p-2"> 
-        <h6 class="card-title">{{ other_room.name }}</h6> 
-        <p class="card-text text-truncate" style="max-width: 250px;">{{ other_room.description }}</p>
-        <a href="{% url 'room_detail' other_room.pk %}" class="btn btn-sm btn-primary">View</a>
+  <div class="col-md-3 col-sm-6">
+    <a href="{% url 'room_detail' other_room.pk %}" style="text-decoration: none">
+      <div class="card mb-2"> 
+        <div class="card-body p-2"> 
+          <h6 class="card-title">{{ other_room.name }}</h6> 
+          <p class="card-text text-truncate" style="max-width: 250px;">{{ other_room.description }}</p>
+        </div>
       </div>
-    </div>
+    </a>
   </div>
   {% endfor %}
 </div>
