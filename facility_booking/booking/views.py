@@ -38,19 +38,19 @@ def create_booking(request):
             booking = form.save(commit=False)
             booking.user = request.user
             booking.save()
-            messages.success(request, 'Booking request submitted successfully. An email notification has been sent.')
-            # Send a dummy email notification (prints to console)
+            messages.success(request, 'Booking request submitted successfully.')
             send_mail(
                 'Booking Request Submitted',
-                f'Your booking for {booking.event_title} is now pending approval.',
+                f'Your booking for {booking.event_title} on {booking.event_date} is now pending approval.',
                 settings.DEFAULT_FROM_EMAIL if hasattr(settings, 'DEFAULT_FROM_EMAIL') else 'noreply@example.com',
                 [request.user.email],
                 fail_silently=True,
             )
             return redirect('booking_success')
-    else:
-        form = BookingForm()
-    return render(request, 'booking/booking_form.html', {'form': form})
+        else:
+            messages.error(request, "There was an error with your booking submission.")
+    # Optionally, redirect back to room_detail if not POST.
+    return redirect(request.META.get('HTTP_REFERER', '/'))
 
 @login_required
 def update_booking(request, booking_id):

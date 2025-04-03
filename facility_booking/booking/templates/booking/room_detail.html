@@ -12,7 +12,8 @@
   {% for booking in bookings %}
     <li class="list-group-item">
       <strong>{{ booking.event_title }}</strong>:
-      {{ booking.start_time|date:"Y-m-d H:i" }} - {{ booking.end_time|date:"Y-m-d H:i" }}
+      {{ booking.event_date }} 
+      {{ booking.start_time|time:"H:i" }} - {{ booking.end_time|time:"H:i" }}
       ({{ booking.status }})
     </li>
   {% empty %}
@@ -36,9 +37,8 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <!-- Set the room field as a hidden field -->
+          <!-- Hidden field for room -->
           <input type="hidden" name="room" value="{{ room.id }}">
-          <!-- Optionally show the room name -->
           <div class="mb-3">
             <label class="form-label">Room</label>
             <p class="form-control-plaintext">{{ room.name }}</p>
@@ -46,6 +46,10 @@
           <div class="mb-3">
             <label for="id_event_title" class="form-label">Event Title</label>
             {{ form.event_title }}
+          </div>
+          <div class="mb-3">
+            <label for="id_event_date" class="form-label">Event Date</label>
+            {{ form.event_date }}
           </div>
           <div class="mb-3">
             <label for="id_start_time" class="form-label">Start Time</label>
@@ -65,6 +69,7 @@
   </div>
 </div>
 
+<!-- Display other random rooms if needed -->
 <hr>
 <h3>Other Rooms You Might Like</h3>
 <div class="row">
@@ -82,5 +87,4 @@
     <p>No other rooms available.</p>
   {% endfor %}
 </div>
-
 {% endblock %}

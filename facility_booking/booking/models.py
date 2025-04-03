@@ -26,8 +26,9 @@ class Booking(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
     event_title = models.CharField(max_length=200)
-    start_time = models.DateTimeField()
-    end_time = models.DateTimeField()
+    event_date = models.DateField()              # New: event date
+    start_time = models.TimeField()              # New: start time
+    end_time = models.TimeField()                # New: end time
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
     payment_status = models.CharField(max_length=10, choices=PAYMENT_CHOICES, default='n/a')
     created_at = models.DateTimeField(auto_now_add=True)
@@ -37,4 +38,4 @@ class Booking(models.Model):
         return f"{self.event_title} - {self.room.name}"
 
     class Meta:
-        ordering = ['-start_time']
+        ordering = ['-event_date', '-start_time']
