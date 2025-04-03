@@ -22,7 +22,13 @@ def room_detail(request, pk):
     random.shuffle(all_other_rooms)
     other_rooms = all_other_rooms[:8]
     bookings = Booking.objects.filter(room=room).order_by('start_time')
-    return render(request, 'booking/room_detail.html', {'room': room, 'bookings': bookings, 'other_rooms': other_rooms})
+    booking_form = BookingForm(initial={'room': room.id})
+    return render(request, 'booking/room_detail.html', {
+        'room': room,
+        'bookings': bookings,
+        'other_rooms': other_rooms,
+        'form': booking_form,
+    })
 
 @login_required
 def create_booking(request):

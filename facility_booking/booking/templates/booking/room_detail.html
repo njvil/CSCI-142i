@@ -1,28 +1,14 @@
 {% extends 'base.html' %}
-
-{% block sub_navbar %}
-<nav class="navbar navbar-expand-lg navbar-light">
-  <div class="container-fluid">
-    <a class="navbar-nav" href="{% url 'room_list' %}" 
-    style="color: #575757; text-decoration: none;" 
-    onmouseover="this.style.color='#295dcf';"
-    onmouseout="this.style.color='#575757';">
-    <span class="d-inline-flex align-items-center">
-      <i class="bi bi-arrow-left me-2"></i><em>Back to Home</em></a>
-    </span>
-  </div>
-</nav>
-{% endblock %}
-
 {% block content %}
 <h2>{{ room.name }}</h2>
 <p>{{ room.description }}</p>
 <p><strong>Capacity:</strong> {{ room.capacity }}</p>
 <p><strong>Location:</strong> {{ room.location }}</p>
 <p><strong>Equipment:</strong> {{ room.equipment }}</p>
-<hr style="margin: 30px 0;">
+
+<hr>
 <h3>Bookings for this Room</h3>
-<ul class="list-group">
+<ul class="list-group mb-3">
   {% for booking in bookings %}
     <li class="list-group-item">
       <strong>{{ booking.event_title }}</strong>:
@@ -33,23 +19,68 @@
     <li class="list-group-item">No bookings yet.</li>
   {% endfor %}
 </ul>
-<a href="{% url 'create_booking' %}" class="btn btn-primary mt-3">Book this Room</a>
-<hr style="margin: 30px 0;">
-<h3>Check Other Rooms</h3>
-<p>
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#bookingModal">
+  Book this Room
+</button>
+
+<!-- Booking Modal -->
+<div class="modal fade" id="bookingModal" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form method="post" action="{% url 'create_booking' %}">
+        {% csrf_token %}
+        <div class="modal-header">
+          <h5 class="modal-title" id="bookingModalLabel">Book {{ room.name }}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <!-- Set the room field as a hidden field -->
+          <input type="hidden" name="room" value="{{ room.id }}">
+          <!-- Optionally show the room name -->
+          <div class="mb-3">
+            <label class="form-label">Room</label>
+            <p class="form-control-plaintext">{{ room.name }}</p>
+          </div>
+          <div class="mb-3">
+            <label for="id_event_title" class="form-label">Event Title</label>
+            {{ form.event_title }}
+          </div>
+          <div class="mb-3">
+            <label for="id_start_time" class="form-label">Start Time</label>
+            {{ form.start_time }}
+          </div>
+          <div class="mb-3">
+            <label for="id_end_time" class="form-label">End Time</label>
+            {{ form.end_time }}
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Submit Booking</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<hr>
+<h3>Other Rooms You Might Like</h3>
 <div class="row">
-  {% for other_room in other_rooms %}
-  <div class="col-md-3 col-sm-6">
-    <a href="{% url 'room_detail' other_room.pk %}" style="text-decoration: none">
-      <div class="card mb-2 custom-card"> 
-        <div class="card-body p-2"> 
-          <h6 class="card-title">{{ other_room.name }}</h6> 
-          <p class="card-text text-truncate" style="max-width: 250px;">{{ other_room.description }}</p>
+  {% for other in other_rooms %}
+    <div class="col-md-3 mb-3">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">{{ other.name }}</h5>
+          <p class="card-text">{{ other.description|truncatewords:15 }}</p>
+          <a href="{% url 'room_detail' other.pk %}" class="btn btn-secondary btn-sm">View Room</a>
         </div>
       </div>
-    </a>
-  </div>
+    </div>
+  {% empty %}
+    <p>No other rooms available.</p>
   {% endfor %}
 </div>
-</p>
+
 {% endblock %}
