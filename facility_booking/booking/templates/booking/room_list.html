@@ -1,31 +1,35 @@
 {% extends 'base.html' %}
 {% block content %}
+
+
+
 <h2>Available Rooms</h2>
 
 <!-- Filter Form -->
-<form method="get" class="mb-3">
+<form method="get" class="mb-4">
   <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-4">
       <label for="event_date" class="form-label">Event Date</label>
       <input type="date" id="event_date" name="event_date" value="{{ event_date }}" class="form-control">
     </div>
-    <div class="col-md-3">
+    <div class="col-md-4">
       <label for="start_time" class="form-label">Start Time</label>
       <input type="time" id="start_time" name="start_time" value="{{ start_time }}" class="form-control">
     </div>
-    <div class="col-md-3">
+    <div class="col-md-4">
       <label for="end_time" class="form-label">End Time</label>
       <input type="time" id="end_time" name="end_time" value="{{ end_time }}" class="form-control">
     </div>
-    <div class="col-md-3">
+  </div>
+  <div class="row">
+    <div class="col-md">
       <label for="equipment" class="form-label">Equipment</label>
-      <select id="equipment" name="equipment" class="form-select">
-        <option value="">-- Select Equipment --</option>
+      <select id="equipment" name="equipment" class="select2 form-select" multiple>
         {% for eq in equipment_list %}
-          <option value="{{ eq.id }}" {% if eq.id|stringformat:"s" == selected_equipment %}selected{% endif %}>{{ eq.name }}</option>
+          <option value="{{ eq.id }}" {% if eq.id|stringformat:"s" in selected_equipment %}selected{% endif %}>{{ eq.name }}</option>
         {% endfor %}
       </select>
-    </div>
+    </div>    
   </div>
   <div class="mt-3">
     <button type="submit" class="btn btn-primary">Filter</button>
@@ -60,4 +64,7 @@
     <p>No rooms available for the selected filters.</p>
   {% endfor %}
 </div>
+
+
+
 {% endblock %}

@@ -16,7 +16,7 @@ def room_list(request):
     event_date = request.GET.get('event_date')
     start_time = request.GET.get('start_time')
     end_time = request.GET.get('end_time')
-    equipment_id = request.GET.get('equipment')
+    selected_equipment = request.GET.getlist('equipment')
     query = request.GET.get('q', '')
 
     # Filter by date and time if provided
@@ -29,9 +29,10 @@ def room_list(request):
             booking__status__in=['pending', 'approved']
         )
     
-    # Filter by equipment if provided (rooms must have at least the selected equipment)
-    if equipment_id:
-        rooms = rooms.filter(equipment=equipment_id)
+    # Filter by equipment if provided (rooms must have all selected equipment items)
+    if selected_equipment:
+        for eq_id in selected_equipment:
+            rooms = rooms.filter(equipment=eq_id)
     
     # Optionally, filter by room name or description with a query string
     if query:
@@ -44,7 +45,7 @@ def room_list(request):
         'event_date': event_date or '',
         'start_time': start_time or '',
         'end_time': end_time or '',
-        'selected_equipment': equipment_id or '',
+        'selected_equipment': selected_equipment,
     })
 
 

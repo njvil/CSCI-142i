@@ -1,7 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from .models import Booking
-from django.utils import timezone
 
 class BookingForm(forms.ModelForm):
     class Meta:
