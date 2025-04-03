@@ -4,7 +4,13 @@
 <p>{{ room.description }}</p>
 <p><strong>Capacity:</strong> {{ room.capacity }}</p>
 <p><strong>Location:</strong> {{ room.location }}</p>
-<p><strong>Equipment:</strong> {{ room.equipment }}</p>
+<p><strong>Equipment:</strong> 
+  {% for eq in room.equipment.all %}
+    {{ eq.name }}{% if not forloop.last %}, {% endif %}
+  {% empty %}
+    None
+  {% endfor %}
+</p>
 
 <hr>
 <h3>Bookings for this Room</h3>
@@ -12,8 +18,7 @@
   {% for booking in bookings %}
     <li class="list-group-item">
       <strong>{{ booking.event_title }}</strong>:
-      {{ booking.event_date }} 
-      {{ booking.start_time|time:"H:i" }} - {{ booking.end_time|time:"H:i" }}
+      {{ booking.event_date }} {{ booking.start_time|time:"H:i" }} - {{ booking.end_time|time:"H:i" }}
       ({{ booking.status }})
     </li>
   {% empty %}
@@ -21,7 +26,7 @@
   {% endfor %}
 </ul>
 
-<!-- Button trigger modal -->
+<!-- Button trigger modal (in case you want to trigger manually) -->
 <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#bookingModal">
   Book this Room
 </button>
@@ -69,7 +74,7 @@
   </div>
 </div>
 
-<!-- Display other random rooms if needed -->
+<!-- Optional: Display other random rooms -->
 <hr>
 <h3>Other Rooms You Might Like</h3>
 <div class="row">
@@ -87,4 +92,17 @@
     <p>No other rooms available.</p>
   {% endfor %}
 </div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  $(document).ready(function() {
+    // If the open_modal flag is true, trigger the modal on page load.
+    var openModal = "{{ open_modal }}";
+    if (openModal === "True") {
+      $('#bookingModal').modal('show');
+    }
+  });
+</script>
 {% endblock %}

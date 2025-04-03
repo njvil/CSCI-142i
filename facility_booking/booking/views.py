@@ -54,13 +54,28 @@ def room_detail(request, pk):
     all_other_rooms = list(Room.objects.exclude(pk=pk))  
     random.shuffle(all_other_rooms)
     other_rooms = all_other_rooms[:8]
-    bookings = Booking.objects.filter(room=room).order_by('start_time')
-    booking_form = BookingForm(initial={'room': room.id})
+    bookings = Booking.objects.filter(room=room).order_by('event_date', 'start_time')
+
+    # Pre-fill the booking form with date and time from GET (if available)
+    initial_data = {'room': room.id}
+    if 'event_date' in request.GET:
+        initial_data['event_date'] = request.GET.get('event_date')
+    if 'start_time' in request.GET:
+        initial_data['start_time'] = request.GET.get('start_time')
+    if 'end_time' in request.GET:
+        initial_data['end_time'] = request.GET.get('end_time')
+
+    booking_form = BookingForm(initial=initial_data)
+
+    # Check if open_modal flag is present
+    open_modal = request.GET.get('open_modal', 'false').lower() == 'true'
+
     return render(request, 'booking/room_detail.html', {
         'room': room,
         'bookings': bookings,
         'other_rooms': other_rooms,
         'form': booking_form,
+        'open_modal': open_modal,
     })
 
 @login_required
