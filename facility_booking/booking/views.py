@@ -17,8 +17,9 @@ def room_list(request):
 
 def room_detail(request, pk):
     room = get_object_or_404(Room, pk=pk)
+    other_rooms = Room.objects.exclude(pk=pk)
     bookings = Booking.objects.filter(room=room).order_by('start_time')
-    return render(request, 'booking/room_detail.html', {'room': room, 'bookings': bookings})
+    return render(request, 'booking/room_detail.html', {'room': room, 'bookings': bookings, 'other_rooms': other_rooms})
 
 @login_required
 def create_booking(request):

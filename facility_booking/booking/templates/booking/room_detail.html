@@ -15,7 +15,7 @@
 <p><strong>Capacity:</strong> {{ room.capacity }}</p>
 <p><strong>Location:</strong> {{ room.location }}</p>
 <p><strong>Equipment:</strong> {{ room.equipment }}</p>
-<hr>
+<hr style="margin: 30px 0;">
 <h3>Bookings for this Room</h3>
 <ul class="list-group">
   {% for booking in bookings %}
@@ -29,4 +29,21 @@
   {% endfor %}
 </ul>
 <a href="{% url 'create_booking' %}" class="btn btn-success mt-3">Book this Room</a>
+<hr style="margin: 30px 0;">
+<h3>Check Other Rooms</h3>
+<p>
+<div class="row">
+  {% for other_room in other_rooms %}
+  <div class="col-md-3 col-sm-6"> 
+    <div class="card mb-2"> 
+      <div class="card-body p-2"> 
+        <h6 class="card-title">{{ other_room.name }}</h6> 
+        <p class="card-text text-truncate" style="max-width: 250px;">{{ other_room.description }}</p>
+        <a href="{% url 'room_detail' other_room.pk %}" class="btn btn-sm btn-primary">View</a>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+</p>
 {% endblock %}
