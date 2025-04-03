@@ -74,5 +74,3 @@ LOGOUT_REDIRECT_URL = '/'
 
 # Email configuration: use console backend for testing notifications
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
-WSGI_APPLICATION = 'api.wsgi.app'
