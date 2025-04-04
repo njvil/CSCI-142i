@@ -27,7 +27,7 @@
 </ul>
 
 <!-- Button trigger modal (in case you want to trigger manually) -->
-<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#bookingModal">
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#bookingModal">
   Book this Room
 </button>
 
@@ -79,15 +79,16 @@
 <h3>Other Rooms You Might Like</h3>
 <div class="row">
   {% for other in other_rooms %}
-    <div class="col-md-3 mb-3">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">{{ other.name }}</h5>
-          <p class="card-text">{{ other.description|truncatewords:15 }}</p>
-          <a href="{% url 'room_detail' other.pk %}" class="btn btn-secondary btn-sm">View Room</a>
+    <div class="col-md-3 col-sm-6">
+    <a href="{% url 'room_detail' other.pk %}" style="text-decoration: none">
+      <div class="card mb-2 custom-card"> 
+        <div class="card-body p-2"> 
+          <h6 class="card-title">{{ other.name }}</h6> 
+          <p class="card-text text-truncate" style="max-width: 250px;">{{ other.description }}</p>
         </div>
       </div>
-    </div>
+    </a>
+  </div>
   {% empty %}
     <p>No other rooms available.</p>
   {% endfor %}
