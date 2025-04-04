@@ -14,6 +14,6 @@ urlpatterns = [
     path('admin/deny-booking/<int:booking_id>/', views.deny_booking, name='deny_booking'),
     path('calendar/', views.calendar_view, name='calendar_view'),
     path('profile/', views.profile, name='profile'),
-    path('how-to-book/', views.how_to_book, name='how_to_book'),
+    path('info_and_faqs/', views.how_to_book, name='how_to_book'),
     path('document-upload/', views.document_upload, name='document_upload'),
 ]
