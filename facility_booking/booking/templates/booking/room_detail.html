@@ -1,4 +1,19 @@
 {% extends 'base.html' %}
+
+{% block sub_navbar %}
+<nav class="navbar navbar-expand-lg navbar-light">
+  <div class="container-fluid">
+    <a class="navbar-nav" href="{% url 'room_list' %}" 
+    style="color: #575757; text-decoration: none;" 
+    onmouseover="this.style.color='#295dcf';"
+    onmouseout="this.style.color='#575757';">
+    <span class="d-inline-flex align-items-center">
+      <i class="bi bi-arrow-left me-2"></i><em>Back to Home</em></a>
+    </span>
+  </div>
+</nav>
+{% endblock %}
+
 {% block content %}
 <h2>{{ room.name }}</h2>
 <p>{{ room.description }}</p>
@@ -12,7 +27,7 @@
   {% endfor %}
 </p>
 
-<hr>
+<hr style="margin: 30px 0;">
 <h3>Bookings for this Room</h3>
 <ul class="list-group mb-3">
   {% for booking in bookings %}
@@ -75,7 +90,7 @@
 </div>
 
 <!-- Optional: Display other random rooms -->
-<hr>
+<hr style="margin: 30px 0;">
 <h3>Other Rooms You Might Like</h3>
 <div class="row">
   {% for other in other_rooms %}
