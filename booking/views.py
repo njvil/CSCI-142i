@@ -16,6 +16,7 @@ def room_list(request):
     event_date = request.GET.get('event_date')
     start_time = request.GET.get('start_time')
     end_time = request.GET.get('end_time')
+    capacity = request.GET.get('capacity')
     selected_equipment = request.GET.getlist('equipment')
     query = request.GET.get('q', '')
 
@@ -38,6 +39,9 @@ def room_list(request):
     if query:
         rooms = rooms.filter(name__icontains=query)
 
+    if capacity:
+        rooms = rooms.filter(capacity__gte=capacity)
+
     return render(request, 'booking/room_list.html', {
         'rooms': rooms,
         'equipment_list': equipment_list,
@@ -45,6 +49,7 @@ def room_list(request):
         'event_date': event_date or '',
         'start_time': start_time or '',
         'end_time': end_time or '',
+        'capacity': capacity or '',
         'selected_equipment': selected_equipment,
     })
 
