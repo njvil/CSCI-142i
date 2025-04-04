@@ -1,6 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from .models import Booking
+from .models import Booking, Document, User
 
 class BookingForm(forms.ModelForm):
     class Meta:
@@ -40,3 +40,20 @@ class BookingForm(forms.ModelForm):
 class BookingUpdateForm(BookingForm):
     # Same as BookingForm, can be extended for additional update-specific logic.
     pass
+
+class DocumentForm(forms.ModelForm):
+    class Meta:
+        model = Document
+        fields = ['document']
+        widgets = {
+            'document': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+        }
+
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'email']
+        widgets = {
+            'username': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+        }

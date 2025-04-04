@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>My Profile</h2>
+
+<div class="row">
+  <!-- Profile Update Form -->
+  <div class="col-md-6">
+    <h3>Update Profile</h3>
+    <form method="post">
+      {% csrf_token %}
+      {{ profile_form.as_p }}
+      <button type="submit" name="update_profile" class="btn btn-primary">Update Profile</button>
+    </form>
+  </div>
+
+  <!-- Password Change Form -->
+  <div class="col-md-6">
+    <h3>Change Password</h3>
+    <form method="post">
+      {% csrf_token %}
+      {{ password_form.as_p }}
+      <button type="submit" name="change_password" class="btn btn-warning">Change Password</button>
+    </form>
+  </div>
+</div>
+
+<hr>
+<h3>My Bookings</h3>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Event Title</th>
+      <th>Room</th>
+      <th>Date</th>
+      <th>Time</th>
+      <th>Status</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for booking in bookings %}
+    <tr>
+      <td>{{ booking.event_title }}</td>
+      <td>{{ booking.room.name }}</td>
+      <td>{{ booking.event_date }}</td>
+      <td>{{ booking.start_time|time:"H:i" }} - {{ booking.end_time|time:"H:i" }}</td>
+      <td>{{ booking.status }}</td>
+      <td>
+        {% if booking.status in 'pending approved' and booking.event_date|date:"U"|add:"-259200" > now|date:"U" %}
+          <a href="{% url 'update_booking' booking.id %}" class="btn btn-sm btn-warning">Modify</a>
+          <a href="{% url 'cancel_booking' booking.id %}" class="btn btn-sm btn-danger">Cancel</a>
+        {% else %}
+          N/A
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

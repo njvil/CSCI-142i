@@ -1,21 +1,6 @@
 {% extends 'base.html' %}
-
-{% block sub_navbar %}
-<nav class="navbar navbar-expand-lg navbar-light">
-  <div class="container-fluid">
-    <a class="navbar-nav" href="{% url 'room_list' %}" 
-    style="color: #575757; text-decoration: none;" 
-    onmouseover="this.style.color='#295dcf';"
-    onmouseout="this.style.color='#575757';">
-    <span class="d-inline-flex align-items-center">
-      <i class="bi bi-arrow-left me-2"></i><em>Back to Home</em></a>
-    </span>
-  </div>
-</nav>
-{% endblock %}
-
 {% block content %}
-<h2>Upcoming Bookings Calendar</h2>
+<h2>Booking Calendar</h2>
 <table class="table table-bordered">
   <thead>
     <tr>
@@ -29,8 +14,8 @@
   <tbody>
     {% for booking in bookings %}
     <tr>
-      <td>{{ booking.start_time|date:"Y-m-d" }}</td>
-      <td>{{ booking.start_time|date:"H:i" }} - {{ booking.end_time|date:"H:i" }}</td>
+      <td>{{ booking.event_date }}</td>
+      <td>{{ booking.start_time|time:"H:i" }} - {{ booking.end_time|time:"H:i" }}</td>
       <td>{{ booking.room.name }}</td>
       <td>{{ booking.event_title }}</td>
       <td>{{ booking.status }}</td>

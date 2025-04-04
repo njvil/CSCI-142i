@@ -47,3 +47,10 @@ class Booking(models.Model):
 
     class Meta:
         ordering = ['-event_date', '-start_time']
+
+class Document(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    document = models.FileField(upload_to='documents/')
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+    def __str__(self):
+        return f"Document {self.id} uploaded by {self.user.username}"

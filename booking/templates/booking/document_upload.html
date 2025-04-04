@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Document Upload</h2>
+<p>Please ensure you submit all necessary paperwork before completing your booking.</p>
+<ul>
+  {% for item in checklist %}
+    <li>{{ item }}</li>
+  {% endfor %}
+</ul>
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  <div class="mb-3">
+    <label for="document" class="form-label">Upload Document</label>
+    {{ form.document }}
+  </div>
+  <button type="submit" class="btn btn-primary">Upload</button>
+</form>
+{% endblock %}
